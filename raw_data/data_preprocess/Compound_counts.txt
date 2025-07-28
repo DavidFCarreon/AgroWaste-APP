@@ -1,0 +1,219 @@
+Ash: 371
+Protein, crude: 340
+Dry Matter: 332
+Fat, crude: 289
+Acid Detergent Fibre (ADF): 214
+Fibre, crude: 212
+Neutral Detergent Fibre: 195
+Energy, gross: 154
+Lignin: 145
+Energy digestibility, growing pig: 99
+Energy, digestible, growing pig: 99
+Lysine: 96
+Leucine: 91
+Phenylalanine: 84
+Tyrosine: 82
+Glucose: 78
+Cellulose: 78
+Arabinose: 77
+Water: 77
+Serine: 77
+Alanine: 76
+Hemicellulose: 75
+Xylose: 74
+Threonine: 74
+Arginine: 74
+Methionine: 73
+Nitrogen, total: 70
+Isoleucine: 70
+Histidine: 70
+Nitrogen digestibility, ruminants: 70
+Valine: 69
+Energy, metabolisable, ruminants: 69
+Energy digestibility, ruminants: 68
+Energy, digestible, ruminants: 68
+Galactose: 66
+Glutamic acid: 65
+Mannose: 65
+Aspartic acid: 64
+Glycine: 63
+Sugar: 63
+Covalent-bound pectin fraction (Na2C03 fraction): 60
+Non covalent-bound pectin fraction (CDTA fraction): 60
+Energy (net) for maintenance: 57
+Energy (net) for growth: 57
+Proline: 57
+Rhamnose: 54
+Tryptophan: 49
+Nitrogen digestibility, growing pig: 45
+Energy (net) for lactation: 42
+Nitrogen: 42
+Uronic acid: 41
+Fucose: 39
+Starch: 36
+Cystine: 35
+Nitrogen degradability (effective, k=6%): 31
+Starch, polarimetry: 30
+Energy, metabolisable, N corrected, growing pig: 30
+Energy, net, growing pig: 29
+Moisture: 29
+Pectin: 27
+Cysteine: 27
+Neutral Detergent Solubles (NDS): 26
+Fat: 26
+Energy, metabolisable: 25
+Ribose: 24
+Protein: 24
+Energy (Total Digestible Nutrients): 23
+Hourly degradation rate of particles: 22
+Nitrogen, immediately digestible: 22
+Nitrogen, potentially digestible: 22
+Glucan: 21
+Xylan: 21
+Carbohydrate: 21
+Nitrogen degradability (effective, k=4%): 21
+eNeutral Detergent Fibre: 20
+Lignin, acid insoluble: 20
+Protein, soluble: 20
+Galactan: 19
+Arabinan: 18
+Aspartic acid/Asparagine: 17
+Lignin, acid soluble: 17
+Sugar, total: 17
+Glutamic acid/Glutamine: 17
+Energy, metabolisable, ruminants (FAO, 1982): 16
+Nitrogen, soluble: 16
+Amino acids, total: 16
+Mannan: 15
+Energy, apparent metabolisable, N corrected, broiler: 15
+Energy (net) for lactaction: 14
+Lignin, Klason: 13
+Pectin yield: 12
+Lignin, acid detergent: 12
+Degree of methylation: 12
+Degree of acetylation (mol% of uronic acids): 12
+Neutral monosaccharide composition: 12
+Protein, undegradable intake: 12
+Fructose: 11
+Rhamnan: 11
+Sugar, soluble: 11
+Sugar, netural: 10
+Aqueous fraction (lectins +  polypeptides + starch): 10
+Protein, crude bound to ADF: 10
+Fat, crude, HCl hydrolysis: 10
+Lignin (sa): 10
+Protein, resistant: 10
+Energy, digestible, rabbit: 9
+Energy, metabolisable, N corrected, rabbit: 9
+Nitrogen-free extract: 9
+Energy digestibility, rabbit: 8
+Albumin: 8
+Glutelin: 8
+GalactoseUA: 8
+Globulin: 8
+GlucoseUA: 8
+Fuctose: 8
+Sugar, non-reducing: 8
+Sugar, reducing: 8
+Prolamin: 8
+Energy, metabolisable, ruminants (gas production): 7
+Sucrose: 7
+Polysaccharides, cell wall: 7
+Lipid: 7
+Nitrogen digestibility, rabbit: 7
+Energy, digestible: 7
+Energy, apparent metabolisable, N corrected, cockerel: 7
+Fibre, dietary, insoluble: 7
+Fibre, dietary, soluble: 7
+Energy: 6
+Dry matter digestibility, in vitro: 6
+Dry matter digestibility: 6
+Carbohydrate, water soluble: 6
+Neutral detergent fibre digestibility: 5
+Neutral Detergent Fibre Crude Protein (NDFCP): 5
+Fibre, dietary: 5
+Fibre, total dietary: 5
+Protein, total: 5
+Inulin: 5
+Energy, net: 5
+Neutral Detergent Fibre, amylase-treated, expressed inclusive of residual ash (aNDF): 4
+Fibre, insoluble non-starch polysaccharides (I-NSP): 4
+Carbohydrate, non-structural: 4
+Total Digestible Nutrients (TDN): 4
+Acid detergent insoluble nitrogen: 4
+Mannitol: 4
+Ash content at 550°C: 4
+Neutral Detergent Fibre Digestibility (NDFD): 4
+Protein (crude) digestibility, in vitro: 4
+Tryptophane: 4
+Protein, crude, apparent digestibility: 4
+Acid Detergent Fibre Crude Protein (ADFCP): 4
+Fibre, soluble non-starch polysaccharides (S-NSP): 4
+Protein, digestible: 4
+Carbohydrate, non-structural accounting for NDFCP: 3
+Fructan: 3
+Energy, true metabolisable, poultry: 3
+Fibre, non-starch polysaccharides, total (T-NSP): 3
+Fibre, soluble: 3
+Nitrogen free extract: 3
+Ash, insoluble: 3
+Energy, true metabolisable, N corrected, poultry: 2
+Dry matter digestibility, ruminants: 2
+Extractives: 2
+Carbohydrate, crude (N-free extract + crude fibre): 2
+Sugar, free: 2
+Nitrogen to protein conversion factor: 2
+Carbohydrate, non-fibre: 2
+Monounsaturated fatty acids: 2
+Fibre, non-starch polysaccharide (NSP): 2
+Nitrogen attached to Acid Detergent Fibre: 2
+Neutral Detergent Fibre, amylase-treated, free of residue ash (aNDFom): 2
+Uronic acids: 2
+Glucan, beta: 2
+Holocellulose: 2
+Starch, enzymatic: 2
+Polyunsaturated fatty acids: 2
+Protein (crude) digestibility: 2
+Ash content at 815°C: 2
+Trans fatty acids: 1
+Fibre, AOAC: 1
+Lactose: 1
+Energy for maintenance: 1
+Energy for growth: 1
+Alcohol: 1
+Maltose: 1
+Cholesterol: 1
+Cell walls, water insoluble: 1
+Saturated fatty acids: 1
+Protein, crude, ethanol insoluble: 1
+Neutral Detergent Soluble Fibre (NDSF): 1
+Stachyose: 1
+Verbascose: 1
+Raffinose: 1
+Fibre, total: 1
+Fatty acids, other: 1
+Fatty acids, total: 1
+Amino acids, free: 1
+Protein, uncharacterised: 1
+Inositol: 1
+Sugar, water soluble: 1
+Acetyl groups: 1
+Ash content at 750°C: 1
+Fruti-body specific gene D: 1
+Fatty acids, volatile: 1
+Dry matter degradability, k=4%: 1
+Dry matter degradability (effective, k=6%): 1
+Dry matter digestibility, pepsin: 1
+Energy, apparent metabolisable, poultry: 1
+Saturated fatty acid: 1
+Lignin, total: 1
+Lipid, crude: 1
+Xylose:glucose ratio: 1
+Ornithine: 1
+Energy digestibility, salmonids: 1
+Pentosan, total: 1
+Ash, crude: 1
+Pentosan, soluble: 1
+Nitrogen digestibility, in vitro: 1
+Nitrogen digestibility, salmonids: 1
+Lysine availability: 1
