@@ -15,4 +15,4 @@ df = pd.concat(dfs, ignore_index=True)
 
 df_cleaned=df[df['Compound Group']=='Proximates'].reset_index(drop=True)
 
-df_cleaned.to_excel("Combined_foods2.xlsx", index=False)
+df_cleaned.to_excel(os.path.join(base_dir, "Combined_foods.xlsx"), index=False)
