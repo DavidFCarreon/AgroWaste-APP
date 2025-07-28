@@ -21,16 +21,18 @@ with open('Side_Stream_counts.txt', 'w') as f:
 
 import string
 import numpy as np
+import string
+import numpy as np
 
 def cleaning(sentence):
     # Handle missing or non-string input
-    if not isinstance(sentence, str):
+    if isinstance(sentence, float) or isinstance(sentence, int):
+        return sentence
+    elif not isinstance(sentence, str):
         return np.nan
 
-    sentence = sentence.strip().lower()  # basic cleaning
-
     # Remove punctuation except dash "-" because we need it for ranges like "10-12"
-    punctuation_without_dash = string.punctuation.replace('-', '')
+    punctuation_without_dash = string.punctuation.replace('-', '').replace('.', '')
     for p in punctuation_without_dash:
         sentence = sentence.replace(p, '')
 
@@ -53,9 +55,7 @@ def cleaning(sentence):
         # if it's not a number or a range, return np.nan or original cleaned string
         return np.nan
 
-
 df['clean_level'] = df['Level'].apply(cleaning)
-
 
 df.columns = df.columns.str.strip()  # Clean column names if needed
 compounds_of_interest = ['Ash', 'Dry Matter', 'Protein, crude'
@@ -66,13 +66,30 @@ compounds_of_interest = ['Ash', 'Dry Matter', 'Protein, crude'
 # Filter to only compounds in your list
 filtered_df = df[df['Compound'].isin(compounds_of_interest)]
 
+
+units_to_drop = [
+    'In vitro digestibility (%)',
+    'kg/m3',
+    '% wet weight',
+    'g/g volatile solids'
+]
+
+filtered_df = filtered_df[~df['Unit'].isin(units_to_drop)]
+
+
+filtered_df.loc[filtered_df['Unit'].str.contains('g/kg', case=False, na=False), 'clean_level'] *= 10
+
+# Divide by 100 if unit contains 'g/g' OR 'g total solids/g'
+filtered_df.loc[filtered_df['Unit'].str.contains('g/g|g total solids/g', case=False, na=False),'clean_level'] /= 100
+
+
 # Pivot
 pivot = filtered_df.pivot_table(
     index=['Food Product', 'Side Stream'],
     columns='Compound',
     values='clean_level',
-    aggfunc='sum'
+    aggfunc='mean'
 ).reset_index()
 
 
-pivot.to_csv('pivot_output.csv', index=False)
+pivot.to_csv(os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)),'..', 'data_preprocess'), "preprocessed.csv"), index=False)
