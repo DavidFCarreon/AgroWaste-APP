@@ -31,7 +31,9 @@ PROXIMAL_MAP_BIO = {
     'HEMCEL(g)': 'Hemicellulose'
 }
 
+print(df_bio_food.shape)
 df_bio_food.rename(columns=PROXIMAL_MAP_BIO, inplace=True)
+df_bio_food.drop(columns=['Soluble Fiber','Insoluble Fiber','Lignin','Hemicellulose','Cellulose'], inplace=True)
 df_bio_food.isna().sum()/df_bio_food.shape[0]*100
 
 
@@ -53,7 +55,7 @@ PROXIMAL_MAP_FDC = {
 
 print(df_fdc.shape)
 df_fdc.rename(columns=PROXIMAL_MAP_FDC, inplace=True)
-df_fdc.drop(columns=['Nitrogen','Total Carbohydrates (sum)'], inplace=True)
+df_fdc.drop(columns=['Nitrogen','Total Carbohydrates (sum)','Energy (kcal)'], inplace=True)
 df_fdc.isna().sum()/df_fdc.shape[0]*100
 
 
