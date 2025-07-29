@@ -1,9 +1,10 @@
 import requests
 import pandas as pd
 import time
+import os
 
 # Inserta tu API KEY de FoodData Central
-API_KEY = '--API_KEY--'
+API_KEY = 'lFn1jlKeM3slz73Lqf82c23mVPWfKrKqlsx4SNSm'
 BASE_URL = "https://api.nal.usda.gov/fdc/v1"
 
 
@@ -14,7 +15,7 @@ NUTRIENT_MAP = {
     "Ash": "Ash",
     "Carbohydrate, by summation": "Carbohydrate, by summation",
     "Carbohydrate, by difference": "Carbohydrate, by difference",
-    "Sugars, total": "Sugars, total",
+    "Sugars, Total": "Sugars, Total",
     "Total Sugars": "Total Sugars",
     "Protein": "Protein",
     "Total lipid (fat)": "Total lipid (fat)",
@@ -74,20 +75,23 @@ def build_dataset_from_ids(allowed_categories: list, csv_path: str, id_column: s
 
 
 
-if __name__ == "__main__":
-    # 1) Asegúrate de tener un CSV 'fdc_ids.csv' con columna 'fdc_id'
-    csv_file = "fdc_ids.csv"
-    allowed_categories = ['Spices and Herbs','Fruits and Fruit Juices','Vegetables and Vegetable Products','Nut and Seed Products',
+
+# 1) Asegúrate de tener un CSV 'fdc_ids.csv' con columna 'fdc_id'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Build the full path to the CSV file
+csv_file = os.path.join(BASE_DIR, "fdc_ids.csv")
+allowed_categories = ['Spices and Herbs','Fruits and Fruit Juices','Vegetables and Vegetable Products','Nut and Seed Products',
                           'Legumes and Legume Products']
 
-    # 2) Construir el DataFrame
-    df_proximal = build_dataset_from_ids(allowed_categories, csv_file, id_column="fdc_id")
+# 2) Construir el DataFrame
+df_proximal = build_dataset_from_ids(allowed_categories, csv_file, id_column="fdc_id")
 
-    # 3) Guardar a CSV
-    output_file = "fdc_ids_proximal_dataset.csv"
+# 3) Guardar a CSV
+output_file = os.path.join(BASE_DIR, "fdc_ids_proximal_dataset.csv")
 
-
-df_final=df_proximal.drop(columns=['Sugars, total', 'category','fdc_id']).rename(columns={'description': 'Food Product', 'food': 'Side Stream'})
+df_proximal['Sugars'] = df_proximal[['Sugars, Total', 'Total Sugars']].mean(axis=1, skipna=True)
+df_final=df_proximal.drop(columns=['Sugars, Total','Total Sugars', 'category','fdc_id']).rename(columns={'description': 'Food Product', 'food': 'Side Stream'})
 df_final.to_csv(output_file, index=False)
 print(f"✅ Dataset final guardado en '{output_file}'")
 print(df_proximal.head())
