@@ -77,10 +77,10 @@ units_to_drop = [
 filtered_df = filtered_df[~df['Unit'].isin(units_to_drop)]
 
 
-filtered_df.loc[filtered_df['Unit'].str.contains('g/kg', case=False, na=False), 'clean_level'] *= 10
+filtered_df.loc[filtered_df['Unit'].str.contains('g/kg', case=False, na=False), 'clean_level'] /= 10
 
 # Divide by 100 if unit contains 'g/g' OR 'g total solids/g'
-filtered_df.loc[filtered_df['Unit'].str.contains('g/g|g total solids/g', case=False, na=False),'clean_level'] /= 100
+filtered_df.loc[filtered_df['Unit'].str.contains('g/g|g total solids/g', case=False, na=False),'clean_level'] *= 100
 
 
 # Pivot
