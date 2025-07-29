@@ -1,3 +1,42 @@
+# === Paquetes principales ===
+numpy>=1.21.0  # Operaciones numéricas eficientes
+pandas>=1.3.0  # Manipulación de datos estructurados
+scikit-learn>=1.0.0  # Machine Learning (regresión, preprocesamiento)
+xgboost>=1.5.0  # Modelos avanzados de boosting
+biopython>=1.79  # Minería de datos de PubMed via Entrez
+
+# === Procesamiento de lenguaje natural ===
+spacy>=3.0.0  # NLP para extracción de entidades
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.0.0/en_core_web_sm-3.0.0-py3-none-any.whl  # Modelo de inglés para spaCy
+chemdataextractor>=2.0.0  # Extracción de datos químicos de textos
+
+# === Visualización y análisis ===
+matplotlib>=3.5.0  # Gráficos estáticos
+seaborn>=0.11.0  # Visualización estadística
+plotly>=5.0.0  # Gráficos interactivos
+shap>=0.40.0  # Interpretabilidad de modelos
+
+# === Interfaz y despliegue ===
+streamlit>=1.12.0  # Dashboard web interactivo
+fastapi>=0.75.0  # API REST (opcional para backend)
+uvicorn>=0.17.0  # Servidor ASGI (para FastAPI)
+
+# === Gestión de datos ===
+openpyxl>=3.0.0  # Leer/exportar Excel
+feather-format>=0.4.0  # Formato eficiente para datos
+
+# === Desarrollo y testing ===
+pytest>=7.0.0  # Tests unitarios
+black>=22.0  # Formateo de código
+mypy>=0.900  # Chequeo de tipos
+jupyter>=1.0.0  # Notebooks interactivos
+
+# === Dependencias opcionales ===
+# pip install -r requirements.txt --no-deps para omitir estas
+pyarrow>=6.0.0; sys_platform != 'win32'  # Soporte para Apache Arrow (Linux/Mac)
+python-dotenv>=0.19.0  # Manejo de variables de entorno
+
+# === Requisitos adicionales para compatibilidad ===
 anyio==4.9.0
 argon2-cffi==25.1.0
 argon2-cffi-bindings==21.2.0
