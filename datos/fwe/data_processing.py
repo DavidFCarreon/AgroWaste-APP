@@ -3,8 +3,9 @@ import os
 import openpyxl
 
 #Get the base directory (where the script is located)
-base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),'..', 'food_waste_explorer_jp')
-# List all .xlsx files in the base directory
+base_dir = os.path.dirname(os.path.abspath(__file__))
+print(f"Base directory: {base_dir}")
+# List .xlsx files in the base directory
 df= pd.read_excel(os.path.join(base_dir, 'Combined_foods_complete.xlsx'))
 
 compounds= df['Compound'].value_counts()
