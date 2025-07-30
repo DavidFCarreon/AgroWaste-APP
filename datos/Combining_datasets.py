@@ -4,7 +4,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Importing all datasets
-df_bio_food = pd.read_csv(os.path.join(BASE_DIR, "BioFoodComp_cleaned_v2.csv"))
+df_bio_food = pd.read_csv(os.path.join(BASE_DIR, "./BioFoodComp/BioFoodComp_cleaned_v2.csv"))
 df_fdc = pd.read_csv(os.path.join(BASE_DIR, "./fdc/fdc_ids_proximal_dataset.csv"))
 df_fwe = pd.read_csv(os.path.join(BASE_DIR, "./fwe/preprocessed.csv"))
 
@@ -15,7 +15,7 @@ PROXIMAL_MAP_BIO = {
     'WATER(g)': 'Moisture',
     'PROTCNT(g)': 'Protein',
     'FATCE(g)': 'Fat',
-    'CHOAVLDF(g)': 'Carbohydrates',
+    'CHOAVLDF(g)': 'Total Carbohydrates',
     'FIBTG(g)': 'Dietary Fiber',
     'ASH(g)': 'Ash',
 
