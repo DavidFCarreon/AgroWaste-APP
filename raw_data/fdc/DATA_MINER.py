@@ -4,7 +4,7 @@ import time
 import os
 
 # Inserta tu API KEY de FoodData Central
-API_KEY = 'lFn1jlKeM3slz73Lqf82c23mVPWfKrKqlsx4SNSm'
+API_KEY = '-- API KEY --'
 BASE_URL = "https://api.nal.usda.gov/fdc/v1"
 
 
