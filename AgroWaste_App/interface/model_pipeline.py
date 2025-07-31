@@ -8,6 +8,8 @@ import pandas as pd
 from sklearn.compose import make_column_selector as selector
 from sklearn.compose import ColumnTransformer
 from scipy.stats import uniform
+import joblib
+
 
 df=pd.read_csv('data/data_preprocessed_FRAP_final.csv')
 X = df.drop(columns=['Food Product','FRAP_value'])
@@ -70,3 +72,11 @@ print("RandomSearch - Scoring function:", random_search.scoring)
 print("RandomSearch - Best negative MSE (cv mean):", random_search.best_score_)
 print("RandomSearch - Test MSE:", mean_squared_error(y_test, y_pred))
 print("RandomSearch - Test RMSE:", np.sqrt(mean_squared_error(y_test, y_pred)))
+
+if grid_search.best_score_ < random_search.best_score_:
+    best_model = grid_best_model
+else:
+    best_model = random_best_model
+
+
+joblib.dump(best_model, 'AgroWaste_App/api/best_model.pkl')
