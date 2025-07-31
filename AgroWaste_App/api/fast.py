@@ -15,10 +15,10 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
-
+# http://127.0.0.1:8000/predict?Moisture=0.8&Protein=0.5&Fat=0.3&Total_Carbohydrates=0.7&Sugars=0.2&Dietary_Fiber=0.7&Crude_Fiber=0.1&Ash=0.8
 @app.get("/predict")
 def predict(
-        Moisture: str,
+        Moisture: float,
         Protein: float,
         Fat: float,
         Total_Carbohydrates	: float,
@@ -27,8 +27,13 @@ def predict(
         Crude_Fiber: float,
         Ash: float
     ):
-
     X_pred = pd.DataFrame([locals()])
+    X_pred = X_pred.rename(columns={
+        "Total_Carbohydrates": "Total Carbohydrates",
+        "Dietary_Fiber": "Dietary Fiber",
+        "Crude_Fiber": "Crude Fiber"
+    })
+
     model = app.state.model
     y_pred = model.predict(X_pred)
 
