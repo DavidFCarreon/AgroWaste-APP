@@ -25,7 +25,7 @@ WORKDIR /prod
 COPY requirements_prod.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY AgroWaste_App AgroWaste_App
+COPY AgroWaste_App/ AgroWaste_App/
 
 CMD uvicorn AgroWaste_App.api.fast:app --host 0.0.0.0 --port $PORT
 # $DEL_END
