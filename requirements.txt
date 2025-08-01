@@ -5,11 +5,6 @@ scikit-learn>=1.0.0  # Machine Learning (regresión, preprocesamiento)
 xgboost>=1.5.0  # Modelos avanzados de boosting
 biopython>=1.79  # Minería de datos de PubMed via Entrez
 
-# === Procesamiento de lenguaje natural ===
-spacy>=3.0.0  # NLP para extracción de entidades
-en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.0.0/en_core_web_sm-3.0.0-py3-none-any.whl  # Modelo de inglés para spaCy
-chemdataextractor>=2.0.0  # Extracción de datos químicos de textos
-
 # === Visualización y análisis ===
 matplotlib>=3.5.0  # Gráficos estáticos
 seaborn>=0.11.0  # Visualización estadística
@@ -24,6 +19,7 @@ uvicorn>=0.17.0  # Servidor ASGI (para FastAPI)
 # === Gestión de datos ===
 openpyxl>=3.0.0  # Leer/exportar Excel
 feather-format>=0.4.0  # Formato eficiente para datos
+fpdf>=1.7.0.2  # Generación de PDFs
 
 # === Desarrollo y testing ===
 pytest>=7.0.0  # Tests unitarios

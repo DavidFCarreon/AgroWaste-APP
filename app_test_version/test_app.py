@@ -24,7 +24,7 @@ st.set_page_config(
 # Cargar modelo y scaler
 @st.cache_resource
 def load_model():
-    model = tf.keras.models.load_model('models/frap_model.keras')
+    model = joblib.load('models/test_model.pkl')
     scaler = joblib.load('models/scaler.pkl')
     return model, scaler
 
