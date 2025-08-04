@@ -38,3 +38,4 @@ def predict(
     y_pred = model.predict(X_pred)
 
     return {"FRAP_value": float(y_pred[0])}
+
