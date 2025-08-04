@@ -5,8 +5,7 @@ import json
 
 load_dotenv()
 
-client = OpenAI()  # toma OPENAI_API_KEY del entorno automáticamente
-
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def obtain_features(product_name: str):
     system_prompt = (
@@ -61,9 +60,9 @@ def obtain_features(product_name: str):
 
 
 def classify_frap(FRAP_value: float) -> str:
-    if FRAP_value < 1:
+    if FRAP_value < 2:
         return "bajo"
-    elif 1 <= FRAP_value <= 10:
+    elif 2 <= FRAP_value <= 10:
         return "moderado"
     else:
         return "alto"
@@ -77,15 +76,11 @@ def obtain_comments(FRAP_value: float, product_name: str) -> str:
 
     frap_level = classify_frap(FRAP_value)
 
-    system_prompt = (
-        "Eres un experto en nutrición con acceso a datos confiables. "
-        "Cuando un usuario menciona un producto junto a su capacidad antioxidante obtenida por el ensayo FRAP "
-        "(poder antioxidante reductor férrico), debes devolver un comentario con sus posibles usos en la industria. "
-        "Un nivel FRAP bajo (<1 µmol Fe²⁺/g) indica baja capacidad antioxidante, moderado (1-10 µmol Fe²⁺/g) indica capacidad media, "
-        "y alto (>10 µmol Fe²⁺/g) indica alta capacidad antioxidante. "
-        "Ajusta tu comentario y recomendaciones según este nivel. "
-        "Siempre utiliza la función 'obtener_usos' para estructurar la respuesta."
-    )
+    system_prompt = (f"""Un investigador está estudiando opciones para la valorización del siguiente residuo agroindustrial: {FRAP_value}.
+                Se realizaron análisis de actividad antioxidante medida mediante FRAP, y de acuerdo con una clasificación de potencial antioxidante, el residuo clasificó como {frap_level}.
+                ¿Qué recomendación le harías al investigador respecto a la dirección hacia la cual debería enfocar sus estudios para el desarrollo de alguna estrategia tecnológica para la valorización del residuo, tomando en cuenta la clasificación?
+                Genera la recomendación con un lenguaje y formato adecuado para incluirla en un reporte técnico dirigido a un investigador con nivel de estudios de doctorado."""
+                )
 
     user_message = (
         f"Producto: {product_name}. Valor FRAP: {FRAP_value} µmol Fe²⁺/g "
@@ -93,7 +88,7 @@ def obtain_comments(FRAP_value: float, product_name: str) -> str:
     )
 
     completion = client.chat.completions.create(
-        model="gpt-4o-mini",  # o gpt-4.1 si tienes acceso
+        model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_message}
@@ -129,8 +124,6 @@ def obtain_comments(FRAP_value: float, product_name: str) -> str:
     args = json.loads(arguments_json)
     return args.get("Usos", "No se pudo generar un comentario.")
 
-
-# AGREGAR FUNCION PARA DEVOLVER CANTIDAD ESTIMADA DE TONELADAS DE RESUDIOS MUNDIAL ANUAL
 
 
 # Ejemplos de prueba:

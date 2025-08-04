@@ -11,13 +11,13 @@ googleapis-common-protos==1.56.4
 protobuf==3.19.6
 h5py==3.10.0
 pyarrow
-typing_extensions==4.8.0
+
 mlflow==2.1.1
-fastapi==0.104.1
-pydantic==2.4.2
+fastapi==0.95.2
+pydantic==1.10.12
 pytz
 uvicorn
 python-dotenv
 
-
-openai==1.54.4
+typing_extensions>=4.7,<5
+openai
