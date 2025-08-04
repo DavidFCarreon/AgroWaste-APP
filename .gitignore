@@ -1,2 +1,4 @@
 notebooks
 .vscode
+.env
+.env.yaml
