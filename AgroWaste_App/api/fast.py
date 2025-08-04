@@ -46,6 +46,7 @@ def predict(
 
     return {"FRAP_value": float(y_pred[0])}
 
+# http://127.0.0.1:8000/get_features?product_name=banana
 @app.get("/get_features")
 def get_features(product_name: str
     ):
@@ -60,7 +61,7 @@ def get_features(product_name: str
     ret["FRAP_value"] = float(y_pred[0])
     return ret
 
-
+# http://127.0.0.1:8000/get_comments?FRAP_value=30&product_name=banana
 @app.get("/get_comments")
 def comments(FRAP_value: float, product_name: str):
 
