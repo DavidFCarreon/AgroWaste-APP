@@ -2,10 +2,11 @@ import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from AgroWaste_App.ml_logic.registry import load_model
-
+from AgroWaste_App.interface.chat_gpt_pipeline import obtain_features
 
 app = FastAPI()
 app.state.model = load_model()
+app.state.gpt = obtain_features()
 
 # Allowing all middleware is optional, but good practice for dev purposes
 app.add_middleware(
@@ -39,3 +40,17 @@ def predict(
 
     return {"FRAP_value": float(y_pred[0])}
 
+@app.get("/get_features")
+def get_features(product_name: str
+    ):
+
+    model_gpt = app.state.gpt
+    features = model_gpt.predict(product_name)
+
+    X_pred = pd.DataFrame([features])
+    model_get = app.state.model
+    y_pred = model_get.predict(X_pred)
+
+    ret=features
+    ret["FRAP_value"] = float(y_pred[0])
+    return ret
