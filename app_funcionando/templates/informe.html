@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Informe FRAP - {{sample_name}}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        h1, h2 { color: #2c3e50; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .highlight { background-color: #e8f5e8; padding: 10px; border-left: 4px solid green; }
+    </style>
+</head>
+<body>
+    <h1>Informe de Evaluación de Potencial Antioxidante</h1>
+    <p><strong>Muestra:</strong> {{sample_name}}</p>
+    <p><strong>Origen:</strong> {{origin}}</p>
+    <p><strong>Fecha:</strong> {{date}}</p>
+
+    <h2>Composición Proximal</h2>
+    <table>
+        <tr><th>Componente</th><th>Valor (%)</th></tr>
+        <tr><td>Humedad</td><td>{{moisture}}</td></tr>
+        <tr><td>Proteína</td><td>{{protein}}</td></tr>
+        <tr><td>Grasa</td><td>{{fat}}</td></tr>
+        <tr><td>Cenizas</td><td>{{ash}}</td></tr>
+        <tr><td>Fibra cruda</td><td>{{crude_fiber}}</td></tr>
+        <tr><td>Carbohidratos totales</td><td>{{total_carbohydrates}}</td></tr>
+        <tr><td>Fibra dietética</td><td>{{dietary_fiber}}</td></tr>
+        <tr><td>Azúcares</td><td>{{sugars}}</td></tr>
+    </table>
+
+    <h2>Predicción de Actividad Antioxidante (FRAP)</h2>
+    <div class="highlight">
+        <p><strong>FRAP predicho:</strong> {{frap_value}} mmol Fe2+/100g</p>
+        <p><strong>Clasificación:</strong> {{classification}}</p>
+        <p><strong>Interpretación:</strong> {{interpretation}}</p>
+    </div>
+
+    <h2>Recomendación para I+D</h2>
+    <p>{{recommendation}}</p>
+</body>
+</html>
