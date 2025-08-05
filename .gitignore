@@ -4,3 +4,4 @@ analysis
 .env
 .env.yaml
 raw_data/
+data/

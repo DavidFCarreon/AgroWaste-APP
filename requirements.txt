@@ -1,9 +1,10 @@
-# === Paquetes principales ===
 numpy>=1.21.0  # Operaciones numéricas eficientes
 pandas>=1.3.0  # Manipulación de datos estructurados
 scikit-learn>=1.0.0  # Machine Learning (regresión, preprocesamiento)
 xgboost>=1.5.0  # Modelos avanzados de boosting
 biopython>=1.79  # Minería de datos de PubMed via Entrez
+openai==1.98.0
+
 
 # === Visualización y análisis ===
 matplotlib>=3.5.0  # Gráficos estáticos
