@@ -1,2 +1,5 @@
 notebooks
 .vscode
+.env
+.env.yaml
+raw_data/
