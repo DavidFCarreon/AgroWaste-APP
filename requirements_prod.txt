@@ -21,3 +21,4 @@ python-dotenv
 
 typing_extensions>=4.7,<5
 openai
+shap

@@ -49,10 +49,10 @@ def obtain_features(product_name: str):
         "Moisture": float(args["Humedad"]),
         "Protein": float(args["Proteína"]),
         "Fat": float(args["Grasa"]),
-        "Total Carbohydrates": float(args["Carbohidratos Totales"]),
+        "Total_Carbohydrates": float(args["Carbohidratos Totales"]),
         "Sugars": float(args["Azúcares"]),
-        "Dietary Fiber": float(args["Fibra Dietética"]),
-        "Crude Fiber": float(args["Fibra Cruda"]),
+        "Dietary_Fiber": float(args["Fibra Dietética"]),
+        "Crude_Fiber": float(args["Fibra Cruda"]),
         "Ash": float(args["Cenizas"])
     }
 
