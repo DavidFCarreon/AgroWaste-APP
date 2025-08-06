@@ -1,6 +1,7 @@
 notebooks
-app_test_version
 analysis
 .vscode
-app_base.py
-app_ver2.py
+.env
+.env.yaml
+raw_data/
+data/
