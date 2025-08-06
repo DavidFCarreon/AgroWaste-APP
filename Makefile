@@ -1,2 +1,2 @@
 run_api:
-	uvicorn AgroWaste_app.api.fast:app --reload
+	uvicorn AgroWaste_App.api.fast:app --reload

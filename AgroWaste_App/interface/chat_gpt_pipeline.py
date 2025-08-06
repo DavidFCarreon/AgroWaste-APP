@@ -14,7 +14,7 @@ def obtain_features(product_name: str):
         "Siempre usa la función 'obtener_caracteristicas' para estructurar los valores, "
         "y no incluyas explicaciones ni respuestas narrativas.")
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": product_name}
@@ -76,19 +76,24 @@ def obtain_comments(FRAP_value: float, product_name: str) -> str:
 
     frap_level = classify_frap(FRAP_value)
 
-    system_prompt = (f"""Un investigador está estudiando opciones para la valorización del siguiente residuo agroindustrial: {FRAP_value}.
-                Se realizaron análisis de actividad antioxidante medida mediante FRAP, y de acuerdo con una clasificación de potencial antioxidante, el residuo clasificó como {frap_level}.
-                ¿Qué recomendación le harías al investigador respecto a la dirección hacia la cual debería enfocar sus estudios para el desarrollo de alguna estrategia tecnológica para la valorización del residuo, tomando en cuenta la clasificación?
-                Genera la recomendación con un lenguaje y formato adecuado para incluirla en un reporte técnico dirigido a un investigador con nivel de estudios de doctorado."""
-                )
+    system_prompt = (f"""
+                    Un investigador se encuentra estudiando opciones para la valorización del siguiente residuo agroindustrial:  {product_name}.
+                    Se realizaron análisis de actividad antioxidante medida mediante FRAP, y de acuerdo con una clasificación de potencial antioxidante, donde
+                    Alto: > 40 mmol Fe2+/100g
+                    Medio: 15 - 40 mmol Fe2+/100g
+                    Bajo: < 15 mmol Fe2+/100g
+                    El residuo clasificó como {frap_level}
+                    ¿Qué recomendación le harías al investigador respecto a la dirección hacia la cual debería enfocar sus estudios para el desarrollo de alguna estrategia tecnológica para la valorización del residuo, tomando en cuenta la clasificación?
+                    Genera una recomendación generalizada y resumida, usando un lenguaje y formato adecuado para incluirla en un reporte técnico para un investigador en la materia con nivel de estudios de doctorado. Usa texto plano.
+                    """)
 
     user_message = (
-        f"Producto: {product_name}. Valor FRAP: {FRAP_value} µmol Fe²⁺/g "
+        f"Producto: {product_name}. Valor FRAP: {FRAP_value} mmol Fe2+/100g "
         f"(nivel {frap_level})."
     )
 
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_message}
