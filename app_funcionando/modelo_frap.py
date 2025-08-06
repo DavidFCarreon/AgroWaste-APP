@@ -6,7 +6,7 @@ import shap
 import os
 
 # Rutas
-MODEL_PATH = "models/modelo_frap_real.pkl"
+MODEL_PATH = "models/final_model.pkl"
 DATA_PATH = "data_preprocessed_FRAP_final.csv"
 
 # Validar archivos
@@ -14,6 +14,22 @@ if not os.path.exists(MODEL_PATH):
     raise FileNotFoundError(f"No se encontró el modelo en {MODEL_PATH}")
 if not os.path.exists(DATA_PATH):
     raise FileNotFoundError(f"No se encontró el dataset en {DATA_PATH}")
+
+
+def get_clean_feature_names():
+    """
+    Devuelve los nombres limpios de las características para visualización.
+    """
+    return [
+        "Humedad",
+        "Proteína",
+        "Grasa",
+        "Ceniza",
+        "Fibra Cruda",
+        "Carb. Totales",
+        "Fibra Dietética",
+        "Azúcares"
+    ]
 
 # Cargar modelo
 model = joblib.load(MODEL_PATH)
@@ -31,6 +47,8 @@ X_sampled_transformed = shap.sample(X_background_transformed, 100)  # Es un nump
 
 # === 🔴 Corrección clave: convertir a DataFrame con nombres de columnas ===
 feature_names = X_background.columns.tolist()  # Nombres originales de las columnas
+clean_feature_names = get_clean_feature_names()  # Nombres limpios: Humedad, Proteína...
+
 X_sampled_df = pd.DataFrame(X_sampled_transformed, columns=feature_names)
 
 # Crear explainer: ahora usamos el DataFrame original (X_background) para el background
@@ -60,6 +78,7 @@ else:
 # Limpiar nombres para mostrar en gráficos
 clean_feature_names = [name.replace("_", " ").title() for name in feature_names]
 
+
 def predict_frap(row):
     """
     Predice FRAP a partir de un dict con las features.
@@ -75,5 +94,6 @@ def get_shap_explainer():
 def get_expected_value():
     return expected_value
 
-def get_clean_feature_names():
-    return clean_feature_names
+def get_background_data():
+    """Devuelve el background usado para el explainer (para beeswarm global)"""
+    return X_sampled_df

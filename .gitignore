@@ -1,7 +1,9 @@
-notebooks
-analysis
+notebooks/
+analysis/
 .vscode
 .env
 .env.yaml
 raw_data/
 data/
+app_funcionando/
+app_test_version/
