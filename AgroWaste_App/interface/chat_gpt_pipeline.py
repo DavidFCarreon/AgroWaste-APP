@@ -60,9 +60,9 @@ def obtain_features(product_name: str):
 
 
 def classify_frap(FRAP_value: float) -> str:
-    if FRAP_value < 2:
+    if FRAP_value < 15:
         return "bajo"
-    elif 2 <= FRAP_value <= 10:
+    elif 15 <= FRAP_value <= 40:
         return "moderado"
     else:
         return "alto"
