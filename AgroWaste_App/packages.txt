@@ -1,0 +1,11 @@
+libpango-1.0-0
+libpangocairo-1.0-0
+libpangoft2-1.0-0
+libpangoxft-1.0-0
+libcairo2
+libffi-dev
+libgdk-pixbuf2.0-0
+libfontconfig1
+libxml2-dev
+libxslt1-dev
+zlib1g-dev
