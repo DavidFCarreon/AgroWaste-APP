@@ -1,5 +1,6 @@
 # app.py (versión optimizada)
 import streamlit as st
+from datetime import datetime
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,10 +11,7 @@ import joblib
 import json
 from app_utils import get_clean_feature_names, safe_api_request, process_batch_shap, generate_report_with_shap , generate_batch_report_with_shap
 
-if 'samples' not in st.session_state:
-    st.session_state.samples = []
-if 'uploaded_df' not in st.session_state:
-    st.session_state.uploaded_df = None
+
 
 # --- Carga de assets precalculados ---
 @st.cache_resource
@@ -70,6 +68,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+if 'samples_db' not in st.session_state:
+    st.session_state.samples_db = []
+
+
 # --- Título y descripción ---
 st.title("🌱 AgroWaste-APP: Antioxidant Power Predictor")
 st.markdown("""
@@ -110,11 +112,6 @@ with tab1:
             'dietary_fiber': Dietary_Fiber,
             'sugars': Sugars
         }
-
-        # Guardar en session_state
-        if 'samples' not in st.session_state:
-            st.session_state.samples = []
-        st.session_state.samples.append(row)
 
         row_display = row.copy()
         row_display['sample_name'] = sample_name
@@ -198,6 +195,17 @@ with tab1:
             st.pyplot(fig2)
             fig2.savefig("shap_waterfall.png", bbox_inches='tight', dpi=150, facecolor='white')
             plt.close(fig2)
+
+            # --- Guardar muestra en base de datos temporal ---
+            sample_to_save = row_display.copy()
+            sample_to_save['source'] = "Predicción Individual"
+            sample_to_save['id'] = f"ind_{datetime.now().strftime('%H%M%S')}"  # ID único
+            # Evitar duplicados por nombre
+            st.session_state.samples_db = [
+                s for s in st.session_state.samples_db
+                if s['sample_name'] != sample_to_save['sample_name'] or s['source'] != "Predicción Individual"
+            ]
+            st.session_state.samples_db.append(sample_to_save)
 
             # Generar informe
             pdf_data = generate_report_with_shap(
@@ -618,13 +626,9 @@ orgánicos, biopigmentos)</li>
 
 # --- Integración con OpenAI ---
 with tab3:
-    st.header("Búsqueda con IA (GPT-4 mini)")
-    search_gpt = st.text_input("Ingresa el nombre de un residuo agroindustrial:", "Ej: Bagazo de manzana")
+    st.header("Búsqueda con IA (Open AI GPT-4 mini)")
+    search_gpt = st.text_input("Ingresa el nombre de un residuo agroindustrial:", "Bagazo de manzana")
     if st.button("Predecir FRAP con IA"):
-        # Guardar en session_state
-        #if 'samples' not in st.session_state:
-        #    st.session_state.samples = []
-        #st.session_state.samples.append({'sample_name': search_gpt})
 
         # Llamar a la API para obtener composición proximal
         url_search = "https://agrowaste-app-476771143854.europe-west1.run.app/get_features"
@@ -671,6 +675,17 @@ with tab3:
             row_display2 = row2.copy()
             row_display2['sample_name'] = search_gpt
             row_display2['origin'] = search_gpt
+
+            # --- Guardar muestra de IA en base de datos temporal ---
+            sample_to_save_ia = row_display2.copy()
+            sample_to_save_ia['source'] = "Búsqueda con IA"
+            sample_to_save_ia['id'] = f"ia_{datetime.now().strftime('%H%M%S')}"
+            # Evitar duplicados por nombre
+            st.session_state.samples_db = [
+                s for s in st.session_state.samples_db
+                if s['sample_name'] != sample_to_save_ia['sample_name'] or s['source'] != "Búsqueda con IA"
+            ]
+            st.session_state.samples_db.append(sample_to_save_ia)
 
             # Mostrar tabla con los valores proximales
             proximal = {
@@ -801,20 +816,44 @@ with tab4:
         }
 
         # Crear lista de opciones: muestra manual + muestras por lote
+        # --- Construir lista de opciones desde todas las fuentes ---
         opciones = []
         datos_opciones = []
 
-        # Añadir muestras individuales y AI de session_state
-        for sample in st.session_state.get('samples', []):
-            # Usamos el nombre exacto que se guardó, que ya fue procesado en tab1
-            opciones.append(sample['sample_name'])
-            datos_opciones.append(sample)
-
-        # Añadir muestras por lote
+        # 1. Muestra del lote (si existe)
         if df is not None and len(df) > 0:
             for _, row in df.iterrows():
-                opciones.append(row['sample_name'])
-                datos_opciones.append(row.to_dict())
+                name = row['sample_name']
+                if name not in opciones:
+                    opciones.append(name)
+                    datos_opciones.append(row.to_dict())
+
+        # 2. Muestras guardadas en session_state (tab1 y tab4)
+        for s in st.session_state.samples_db:
+            name = s['sample_name']
+            if name not in opciones:
+                opciones.append(name)
+                datos_opciones.append(s.copy())  # copia completa
+
+        # 3. Muestra manual actual (si no está ya en la lista)
+        try:
+            current_manual_name = sample_name or "Muestra Manual"
+            if current_manual_name not in opciones:
+                muestra_manual = {
+                    'sample_name': current_manual_name,
+                    'moisture': Moisture,
+                    'protein': Protein,
+                    'fat': Fat,
+                    'ash': Ash,
+                    'crude_fiber': Crude_Fiber,
+                    'total_carbohydrates': Total_Carbohydrates,
+                    'dietary_fiber': Dietary_Fiber,
+                    'sugars': Sugars
+                }
+                opciones.append(current_manual_name)
+                datos_opciones.append(muestra_manual)
+        except:
+            pass  # Si no están definidas, ignora
 
 
         if len(opciones) == 0:
@@ -941,7 +980,7 @@ with tab5:
 
             3. **Búsqueda con IA**
                - Ingresa el nombre de un residuo agroindustrial
-               - Obtén por medio de IA (GPT-4 OpenAI) la composición proximal estimada del residuo
+               - Obtén por medio de IA (OpenAI GPT-4 mini) la composición proximal estimada del residuo
                - Obtén predicción FRAP y explicación SHAP
                - Genera informe descargable
             """)
@@ -998,7 +1037,7 @@ with tab5:
         st.markdown("""
 
         ### Tecnologías utilizadas:
-        - Python, Scikit-learn, Google Cloud, FastAPI, Uvicorn, Streamlit
+        - Python, Scikit-learn, Google Cloud, OpenAI GPT-4 mini, FastAPI, Uvicorn, Streamlit
         - Desplegado en Streamlit Cloud
         """)
         st.markdown("""
