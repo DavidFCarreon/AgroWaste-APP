@@ -3,7 +3,7 @@ pandas>=1.3.0  # Manipulación de datos estructurados
 openai==1.98.0
 weasyprint==66.0  # Generación de PDFs y HTML
 joblib==1.3.2
-xhtml2pdf==0.2.12  # Reemplazo para generación de PDF
+reportlab==4.4.3
 fpdf>=1.7.0.2     # Ligero y sin dependencias complejas
 Pillow==10.2.0     # Para manejo de imágenes
 
