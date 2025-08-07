@@ -139,11 +139,11 @@ with tab1:
             feature_values1 = np.array(prediction1["shap_data"])
             # Mostrar el resultado con estilo condicional
             if frap1 < 15:
-                st.warning(f"FRAP: **{frap1:.2f} mmol Fe²⁺/100g** - *Poder antioxidante bajo*")
+                st.warning(f"FRAP: **{frap1:.2f} mmol Fe2+/100g** - *Poder antioxidante bajo*")
             elif 15 <= frap1 < 40:
-                st.info(f"FRAP: **{frap1:.2f} mmol Fe²⁺/100g** - *Poder antioxidante medio*")
+                st.info(f"FRAP: **{frap1:.2f} mmol Fe2+/100g** - *Poder antioxidante medio*")
             else:  # frap >= 40
-                st.success(f"FRAP: **{frap1:.2f} mmol Fe²⁺/100g** - *Poder antioxidante alto*")
+                st.success(f"FRAP: **{frap1:.2f} mmol Fe2+/100g** - *Poder antioxidante alto*")
 
 
             # === Recomendaciones dinámicas ===
@@ -250,7 +250,7 @@ with tab2:
         'total_carbohydrates': 'Carbohidratos Totales',
         'dietary_fiber': 'Fibra Dietética',
         'sugars': 'Azúcares',
-        'FRAP_predicho': 'FRAP Predicho (mmol Fe²⁺/100g)',
+        'FRAP_predicho': 'FRAP Predicho (mmol Fe2+/100g)',
         'Clasificación': 'Clasificación'
     }
 
@@ -334,7 +334,7 @@ with tab2:
 
             # Mostrar DataFrame con columnas ajustadas
             st.dataframe(
-                display_df.sort_values("FRAP Predicho (mmol Fe²⁺/100g)", ascending=False),
+                display_df.sort_values("FRAP Predicho (mmol Fe2+/100g)", ascending=False),
                 height=min(600, 35 * len(display_df) + 40),
                 use_container_width=True,
                 hide_index=True,
@@ -655,11 +655,11 @@ with tab3:
             st.markdown("### Resultados encontrados")
             # Mostrar el resultado con estilo condicional
             if frap2 < 15:
-                st.warning(f"FRAP: **{frap2:.2f} mmol Fe²⁺/100g** - *Poder antioxidante bajo*")
+                st.warning(f"FRAP: **{frap2:.2f} mmol Fe2+/100g** - *Poder antioxidante bajo*")
             elif 15 <= frap2 < 40:
-                st.info(f"FRAP: **{frap2:.2f} mmol Fe²⁺/100g** - *Poder antioxidante medio*")
+                st.info(f"FRAP: **{frap2:.2f} mmol Fe2+/100g** - *Poder antioxidante medio*")
             else:  # frap2 >= 40
-                st.success(f"FRAP: **{frap2:.2f} mmol Fe²⁺/100g** - *Poder antioxidante alto*")
+                st.success(f"FRAP: **{frap2:.2f} mmol Fe2+/100g** - *Poder antioxidante alto*")
 
             row2 = {
                 'moisture': moist2,
@@ -996,7 +996,7 @@ with tab5:
             ### 🧪 Unidades de medida:
 
             - Todos los componentes en **% peso seco** (g/100g)
-            - FRAP en **mmol Fe²⁺/100g** de muestra seca
+            - FRAP en **mmol Fe2+/100g** de muestra seca
 
             ### 🔄 Recomendaciones:
 
@@ -1010,7 +1010,7 @@ with tab5:
         st.markdown("""
         ### Método FRAP (Ferric Reducing Antioxidant Power)
 
-        - **Principio:** Mide la capacidad de una muestra para reducir el ion férrico (Fe³⁺) a ferroso (Fe²⁺)
+        - **Principio:** Mide la capacidad de una muestra para reducir el ion férrico (Fe3+) a ferroso (Fe2+)
         - **Ventajas:** Simple, reproducible, ampliamente usado en estudios de alimentos
         - **Limitaciones:** Solo detecta antioxidantes reductores en condiciones ácidas
 
