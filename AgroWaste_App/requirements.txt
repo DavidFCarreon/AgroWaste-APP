@@ -16,5 +16,6 @@ uvicorn>=0.17.0  # Servidor ASGI (para FastAPI)
 
 # === Gestión de datos ===
 feather-format>=0.4.0  # Formato eficiente para datos
+
 # === Generación de PDF ===
 pdfkit>=0.6.1
