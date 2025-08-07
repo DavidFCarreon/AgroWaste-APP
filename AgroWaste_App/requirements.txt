@@ -24,4 +24,3 @@ uvicorn>=0.17.0  # Servidor ASGI (para FastAPI)
 # === Gestión de datos ===
 openpyxl>=3.0.0  # Leer/exportar Excel
 feather-format>=0.4.0  # Formato eficiente para datos
-fpdf>=1.7.0.2  # Generación de PDFs
