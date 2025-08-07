@@ -1,9 +1,8 @@
 numpy>=1.21.0  # Operaciones numéricas eficientes
 pandas>=1.3.0  # Manipulación de datos estructurados
 openai==1.98.0
-weasyprint==66.0  # Generación de PDFs y HTML
+xhtml2pdf==0.2.12 --global-option="--no-pycairo"
 joblib==1.3.2
-reportlab==4.4.3
 fpdf>=1.7.0.2     # Ligero y sin dependencias complejas
 Pillow==10.2.0     # Para manejo de imágenes
 
