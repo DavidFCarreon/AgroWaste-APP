@@ -1,3 +1,4 @@
+# app.py (versión optimizada)
 import streamlit as st
 from datetime import datetime
 import pandas as pd
@@ -1085,4 +1086,3 @@ with st.sidebar:
             csv_example = f.read()
         st.sidebar.download_button("📥 Ejemplo CSV", csv_example, "ejemplo_datos.csv", "text/csv")
     except: pass
-
