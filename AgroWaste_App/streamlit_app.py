@@ -154,11 +154,11 @@ with tab1:
 
             # Mostrar resultado
             if frap1 < 15:
-                st.warning(f"FRAP: **{frap1:.2f} mmol Fe²⁺/100g** - *Poder antioxidante bajo*")
+                st.warning(f"FRAP: **{frap1:.2f} mmol Fe2+/100g** - *Poder antioxidante bajo*")
             elif 15 <= frap1 < 40:
-                st.info(f"FRAP: **{frap1:.2f} mmol Fe²⁺/100g** - *Poder antioxidante medio*")
+                st.info(f"FRAP: **{frap1:.2f} mmol Fe2+/100g** - *Poder antioxidante medio*")
             else:
-                st.success(f"FRAP: **{frap1:.2f} mmol Fe²⁺/100g** - *Poder antioxidante alto*")
+                st.success(f"FRAP: **{frap1:.2f} mmol Fe2+/100g** - *Poder antioxidante alto*")
 
             # Recomendaciones dinámicas
             url_gc = "https://agrowaste-app-476771143854.europe-west1.run.app/get_comments"
@@ -244,7 +244,7 @@ with tab2:
         'total_carbohydrates': 'Carbohidratos Totales',
         'dietary_fiber': 'Fibra Dietética',
         'sugars': 'Azúcares',
-        'FRAP_predicho': 'FRAP Predicho (mmol Fe²⁺/100g)',
+        'FRAP_predicho': 'FRAP Predicho (mmol Fe2+/100g)',
         'Clasificación': 'Clasificación'
     }
 
@@ -271,7 +271,7 @@ with tab2:
             </style>
             """, unsafe_allow_html=True)
             st.dataframe(
-                display_df.sort_values("FRAP Predicho (mmol Fe²⁺/100g)", ascending=False),
+                display_df.sort_values("FRAP Predicho (mmol Fe2+/100g)", ascending=False),
                 use_container_width=True,
                 hide_index=True
             )
@@ -417,11 +417,11 @@ with tab3:
             feature_values2 = np.array(prediction2["shap_data"])
 
             if frap2 < 15:
-                st.warning(f"FRAP: **{frap2:.2f} mmol Fe²⁺/100g** - *Poder antioxidante bajo*")
+                st.warning(f"FRAP: **{frap2:.2f} mmol Fe2+/100g** - *Poder antioxidante bajo*")
             elif 15 <= frap2 < 40:
-                st.info(f"FRAP: **{frap2:.2f} mmol Fe²⁺/100g** - *Poder antioxidante medio*")
+                st.info(f"FRAP: **{frap2:.2f} mmol Fe2+/100g** - *Poder antioxidante medio*")
             else:
-                st.success(f"FRAP: **{frap2:.2f} mmol Fe²⁺/100g** - *Poder antioxidante alto*")
+                st.success(f"FRAP: **{frap2:.2f} mmol Fe2+/100g** - *Poder antioxidante alto*")
 
             row_display2 = {
                 'sample_name': search_gpt,
@@ -638,7 +638,7 @@ with st.sidebar:
     3. **Simulador**: Cambios hipotéticos
     """)
     st.markdown("### 🔍 Método FRAP")
-    st.markdown("Mide capacidad de reducir Fe³⁺ a Fe²⁺.")
+    st.markdown("Mide capacidad de reducir Fe3+ a Fe2+.")
     st.markdown("### 📊 Clasificación FRAP")
     st.markdown("""
     - **Alto**: > 40
