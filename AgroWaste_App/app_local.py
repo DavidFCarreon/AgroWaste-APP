@@ -9,7 +9,7 @@ import shap
 import os
 import joblib
 import json
-from app_utils_local import get_clean_feature_names, safe_api_request, process_batch_shap, generate_report_with_shap , generate_batch_report_with_shap
+from app_utils_local import safe_api_request, process_batch_shap, generate_report_with_shap , generate_batch_report_with_shap
 
 
 
@@ -703,7 +703,7 @@ with tab3:
                     "Fibra beneficiosa para la digestión (g/100g)",
                     "Fibra indigerible (g/100g)",
                     "Contenido mineral inorgánico (g/100g)",
-                    "Capacidad antioxidante mmol (Fe2+/100g)"
+                    "Capacidad antioxidante mmol (Fe²⁺/100g)"
                 ]
             }
 
@@ -967,12 +967,12 @@ with tab5:
             1. **Predicción Individual**
                - Ingresa valores manualmente de composición proximal
                - Obtén predicción FRAP y explicación SHAP
-               - Genera informe descargable
+               - Obtén recomendaciones de I+D
 
             2. **Predicción por Lotes**
                - Sube un archivo CSV con múltiples muestras
                - Descarga resultados y análisis comparativo
-               - Genera informe completo con SHAP para todas las muestras
+               - Obtén recomendaciones de I+D para todo el lote
 
             3. **Simulador What-if**
                - Explora cómo cambios en componentes afectan el FRAP
@@ -982,7 +982,7 @@ with tab5:
                - Ingresa el nombre de un residuo agroindustrial
                - Obtén por medio de IA (OpenAI GPT-4 mini) la composición proximal estimada del residuo
                - Obtén predicción FRAP y explicación SHAP
-               - Genera informe descargable
+               - Obtén recomendaciones de I+D
             """)
 
         with col2:
@@ -1072,14 +1072,14 @@ with st.sidebar:
     st.markdown("### 🔍 Método FRAP")
     st.markdown("""
     El método FRAP (Ferric Reducing Antioxidant Power) mide capacidad antioxidante
-    de una muestra para reducir los iones férricos (Fe3+) a iones ferrosos (Fe2+).
+    de una muestra para reducir los iones férricos (Fe³⁺) a iones ferrosos (Fe²⁺).
     """)
 
     st.markdown("### 📊 Clasificación FRAP")
     st.markdown("""
-    - **Alto**: > 40 mmol Fe2+/100g
-    - **Medio**: 15-40 mmol Fe2+/100g
-    - **Bajo**: < 15 mmol Fe2+/100g
+    - **Alto**: > 40 mmol Fe²⁺/100g
+    - **Medio**: 15-40 mmol Fe²⁺/100g
+    - **Bajo**: < 15 mmol Fe²⁺/100g
     """)
     try:
         with open("AgroWaste_App/dataset/Ejemplo.csv", "r") as f:

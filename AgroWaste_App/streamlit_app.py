@@ -9,7 +9,7 @@ import shap
 import os
 import joblib
 import json
-from app_utils import get_clean_feature_names, safe_api_request, process_batch_shap, generate_report_with_shap , generate_batch_report_with_shap
+from app_utils import safe_api_request, process_batch_shap
 
 
 
@@ -139,11 +139,11 @@ with tab1:
             feature_values1 = np.array(prediction1["shap_data"])
             # Mostrar el resultado con estilo condicional
             if frap1 < 15:
-                st.warning(f"FRAP: **{frap1:.2f} mmol Fe2+/100g** - *Poder antioxidante bajo*")
+                st.warning(f"FRAP: **{frap1:.2f} mmol Fe²⁺/100g** - *Poder antioxidante bajo*")
             elif 15 <= frap1 < 40:
-                st.info(f"FRAP: **{frap1:.2f} mmol Fe2+/100g** - *Poder antioxidante medio*")
+                st.info(f"FRAP: **{frap1:.2f} mmol Fe²⁺/100g** - *Poder antioxidante medio*")
             else:  # frap >= 40
-                st.success(f"FRAP: **{frap1:.2f} mmol Fe2+/100g** - *Poder antioxidante alto*")
+                st.success(f"FRAP: **{frap1:.2f} mmol Fe²⁺/100g** - *Poder antioxidante alto*")
 
 
             # === Recomendaciones dinámicas ===
@@ -207,21 +207,7 @@ with tab1:
             ]
             st.session_state.samples_db.append(sample_to_save)
 
-            # Generar informe
-            pdf_data = generate_report_with_shap(
-                data=row_display,
-                frap_value=frap1,
-                beeswarm_img="shap_beeswarm.png",
-                waterfall_img="shap_waterfall.png",
-                recommendations=comment if comment else None
-            )
-            if pdf_data:
-                st.download_button(
-                    "📥 Descargar informe PDF con SHAP",
-                    pdf_data,
-                    f"informe_{sample_name}_con_shap.pdf",
-                    "application/pdf"
-                )
+
         except Exception as e:
             st.error(f"Error: {e}")
 
@@ -250,7 +236,7 @@ with tab2:
         'total_carbohydrates': 'Carbohidratos Totales',
         'dietary_fiber': 'Fibra Dietética',
         'sugars': 'Azúcares',
-        'FRAP_predicho': 'FRAP Predicho (mmol Fe2+/100g)',
+        'FRAP_predicho': 'FRAP Predicho (mmol Fe²⁺/100g)',
         'Clasificación': 'Clasificación'
     }
 
@@ -334,7 +320,7 @@ with tab2:
 
             # Mostrar DataFrame con columnas ajustadas
             st.dataframe(
-                display_df.sort_values("FRAP Predicho (mmol Fe2+/100g)", ascending=False),
+                display_df.sort_values("FRAP Predicho (mmol Fe²⁺/100g)", ascending=False),
                 height=min(600, 35 * len(display_df) + 40),
                 use_container_width=True,
                 hide_index=True,
@@ -608,15 +594,6 @@ orgánicos, biopigmentos)</li>
                         "image/png"
                     )
 
-            # === 3. Generar informe PDF por lote con todos los Waterfalls ===
-            pdf_data = generate_batch_report_with_shap(df, waterfall_data)
-            if pdf_data:
-                st.download_button(
-                    "📥 Descargar informe por lote con SHAP",
-                    pdf_data,
-                    "informe_lote_con_shap.pdf",
-                    "application/pdf"
-                )
 
             # Limpieza de archivos temporales
             for img_tuple in waterfall_data:  # img_tuple es (img_path, sample_name)
@@ -655,11 +632,11 @@ with tab3:
             st.markdown("### Resultados encontrados")
             # Mostrar el resultado con estilo condicional
             if frap2 < 15:
-                st.warning(f"FRAP: **{frap2:.2f} mmol Fe2+/100g** - *Poder antioxidante bajo*")
+                st.warning(f"FRAP: **{frap2:.2f} mmol Fe²⁺/100g** - *Poder antioxidante bajo*")
             elif 15 <= frap2 < 40:
-                st.info(f"FRAP: **{frap2:.2f} mmol Fe2+/100g** - *Poder antioxidante medio*")
+                st.info(f"FRAP: **{frap2:.2f} mmol Fe²⁺/100g** - *Poder antioxidante medio*")
             else:  # frap2 >= 40
-                st.success(f"FRAP: **{frap2:.2f} mmol Fe2+/100g** - *Poder antioxidante alto*")
+                st.success(f"FRAP: **{frap2:.2f} mmol Fe²⁺/100g** - *Poder antioxidante alto*")
 
             row2 = {
                 'moisture': moist2,
@@ -703,7 +680,7 @@ with tab3:
                     "Fibra beneficiosa para la digestión (g/100g)",
                     "Fibra indigerible (g/100g)",
                     "Contenido mineral inorgánico (g/100g)",
-                    "Capacidad antioxidante mmol (Fe2+/100g)"
+                    "Capacidad antioxidante mmol (Fe²⁺/100g)"
                 ]
             }
 
@@ -777,22 +754,6 @@ with tab3:
             fig2.savefig("shap_waterfall.png", bbox_inches='tight', dpi=150, facecolor='white')
             plt.close(fig2)
 
-            # Generar informe
-            pdf_data = generate_report_with_shap(
-                data=row_display2,
-                frap_value=frap2,
-                beeswarm_img="shap_beeswarm.png",
-                waterfall_img="shap_waterfall.png",
-                recommendations=comment2 if comment2 else None
-            )
-
-            if pdf_data:
-                st.download_button(
-                    "📥 Descargar informe PDF con SHAP",
-                    pdf_data,
-                    f"informe_{search_gpt}_con_shap.pdf",
-                    "application/pdf"
-                )
         except Exception as e:
             st.error(f"Error: {e}")
 
@@ -967,12 +928,12 @@ with tab5:
             1. **Predicción Individual**
                - Ingresa valores manualmente de composición proximal
                - Obtén predicción FRAP y explicación SHAP
-               - Genera informe descargable
+               - Obtén recomendaciones de I+D
 
             2. **Predicción por Lotes**
                - Sube un archivo CSV con múltiples muestras
                - Descarga resultados y análisis comparativo
-               - Genera informe completo con SHAP para todas las muestras
+               - Obtén recomendaciones de I+D para todo el lote
 
             3. **Simulador What-if**
                - Explora cómo cambios en componentes afectan el FRAP
@@ -982,7 +943,7 @@ with tab5:
                - Ingresa el nombre de un residuo agroindustrial
                - Obtén por medio de IA (OpenAI GPT-4 mini) la composición proximal estimada del residuo
                - Obtén predicción FRAP y explicación SHAP
-               - Genera informe descargable
+               - Obtén recomendaciones de I+D
             """)
 
         with col2:
@@ -996,7 +957,7 @@ with tab5:
             ### 🧪 Unidades de medida:
 
             - Todos los componentes en **% peso seco** (g/100g)
-            - FRAP en **mmol Fe2+/100g** de muestra seca
+            - FRAP en **mmol Fe²⁺/100g** de muestra seca
 
             ### 🔄 Recomendaciones:
 
@@ -1010,7 +971,7 @@ with tab5:
         st.markdown("""
         ### Método FRAP (Ferric Reducing Antioxidant Power)
 
-        - **Principio:** Mide la capacidad de una muestra para reducir el ion férrico (Fe3+) a ferroso (Fe2+)
+        - **Principio:** Mide la capacidad de una muestra para reducir el ion férrico (Fe³⁺) a ferroso (Fe²⁺)
         - **Ventajas:** Simple, reproducible, ampliamente usado en estudios de alimentos
         - **Limitaciones:** Solo detecta antioxidantes reductores en condiciones ácidas
 
@@ -1072,14 +1033,14 @@ with st.sidebar:
     st.markdown("### 🔍 Método FRAP")
     st.markdown("""
     El método FRAP (Ferric Reducing Antioxidant Power) mide capacidad antioxidante
-    de una muestra para reducir los iones férricos (Fe3+) a iones ferrosos (Fe2+).
+    de una muestra para reducir los iones férricos (Fe³⁺) a iones ferrosos (Fe²⁺).
     """)
 
     st.markdown("### 📊 Clasificación FRAP")
     st.markdown("""
-    - **Alto**: > 40 mmol Fe2+/100g
-    - **Medio**: 15-40 mmol Fe2+/100g
-    - **Bajo**: < 15 mmol Fe2+/100g
+    - **Alto**: > 40 mmol Fe²⁺/100g
+    - **Medio**: 15-40 mmol Fe²⁺/100g
+    - **Bajo**: < 15 mmol Fe²⁺/100g
     """)
     try:
         with open("AgroWaste_App/dataset/Ejemplo.csv", "r") as f:
