@@ -9,7 +9,7 @@ import shap
 import os
 import joblib
 import json
-from app_utils import get_clean_feature_names, safe_api_request, process_batch_shap, generate_report_with_shap , generate_batch_report_with_shap
+from app_utils_local import get_clean_feature_names, safe_api_request, process_batch_shap, generate_report_with_shap , generate_batch_report_with_shap
 
 
 
@@ -208,22 +208,20 @@ with tab1:
             st.session_state.samples_db.append(sample_to_save)
 
             # Generar informe
-            pdf_bytes = generate_report_with_shap(
+            pdf_data = generate_report_with_shap(
                 data=row_display,
                 frap_value=frap1,
                 beeswarm_img="shap_beeswarm.png",
                 waterfall_img="shap_waterfall.png",
                 recommendations=comment if comment else None
             )
-
-            if pdf_bytes:
+            if pdf_data:
                 st.download_button(
-                    "📥 Descargar informe PDF",
-                    pdf_bytes,
-                    file_name=f"informe_{sample_name}.pdf",
-                    mime="application/pdf"
+                    "📥 Descargar informe PDF con SHAP",
+                    pdf_data,
+                    f"informe_{sample_name}_con_shap.pdf",
+                    "application/pdf"
                 )
-
         except Exception as e:
             st.error(f"Error: {e}")
 
@@ -611,15 +609,14 @@ orgánicos, biopigmentos)</li>
                     )
 
             # === 3. Generar informe PDF por lote con todos los Waterfalls ===
-            pdf_bytes = generate_batch_report_with_shap(df, waterfall_data)
-            if pdf_bytes:
+            pdf_data = generate_batch_report_with_shap(df, waterfall_data)
+            if pdf_data:
                 st.download_button(
-                    "📥 Descargar informe completo",
-                    pdf_bytes,
-                    "informe_lote.pdf",
+                    "📥 Descargar informe por lote con SHAP",
+                    pdf_data,
+                    "informe_lote_con_shap.pdf",
                     "application/pdf"
                 )
-
 
             # Limpieza de archivos temporales
             for img_tuple in waterfall_data:  # img_tuple es (img_path, sample_name)
@@ -781,7 +778,7 @@ with tab3:
             plt.close(fig2)
 
             # Generar informe
-            pdf_bytes = generate_report_with_shap(
+            pdf_data = generate_report_with_shap(
                 data=row_display2,
                 frap_value=frap2,
                 beeswarm_img="shap_beeswarm.png",
@@ -789,14 +786,13 @@ with tab3:
                 recommendations=comment2 if comment2 else None
             )
 
-            if pdf_bytes:
+            if pdf_data:
                 st.download_button(
-                    "📥 Descargar informe PDF",
-                    pdf_bytes,
-                    file_name=f"informe_{sample_name}.pdf",
-                    mime="application/pdf"
+                    "📥 Descargar informe PDF con SHAP",
+                    pdf_data,
+                    f"informe_{search_gpt}_con_shap.pdf",
+                    "application/pdf"
                 )
-
         except Exception as e:
             st.error(f"Error: {e}")
 

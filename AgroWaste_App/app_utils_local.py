@@ -15,21 +15,7 @@ MODEL_PATH = "AgroWaste_App/models/ml_model.pkl"
 DATA_PATH = "AgroWaste_App/dataset/data_preprocessed_FRAP_final.csv"
 BACKGROUND_PATH = "AgroWaste_App/models/background_df.pkl"
 
-# Diccionario de traducción de columnas
-COLUMN_TRANSLATIONS = {
-    'sample_name': 'Residuo agroindustrial',
-    'origin': 'Origen',
-    'moisture': 'Humedad',
-    'protein': 'Proteína',
-    'fat': 'Grasa',
-    'ash': 'Ceniza',
-    'crude_fiber': 'Fibra Cruda',
-    'total_carbohydrates': 'Carb. Totales',
-    'dietary_fiber': 'Fibra Diet.',
-    'sugars': 'Azúcares',
-    'FRAP_predicho': 'FRAP Predicho',
-    'Clasificación': 'Clasificación'
-}
+
 
 # Validar archivos
 if not os.path.exists(MODEL_PATH):
@@ -297,11 +283,26 @@ def generate_report_with_shap(data, frap_value, beeswarm_img, waterfall_img, rec
         st.error(f"❌ Error al generar informe: {e}")
         return None
 
-# --- Función generate_batch_report_with_shap (optimizada) ---
+# --- Función generate_batch_report_with_shap (modificada con orientación horizontal) ---
 def generate_batch_report_with_shap(df, waterfall_images):
     import os
     import base64
     required_cols = ['moisture','protein','fat','ash','crude_fiber','total_carbohydrates','dietary_fiber','sugars']
+    COLUMN_TRANSLATIONS = {
+    'sample_name': 'Residuo agroindustrial',
+    'origin': 'Origen',
+    'moisture': 'Humedad',
+    'protein': 'Proteína',
+    'fat': 'Grasa',
+    'ash': 'Ceniza',
+    'crude_fiber': 'Fibra Cruda',
+    'total_carbohydrates': 'Carb. Totales',
+    'dietary_fiber': 'Fibra Diet.',
+    'sugars': 'Azúcares',
+    'FRAP_predicho': 'FRAP Predicho',
+    'Clasificación': 'Clasificación'
+}
+
     try:
         # Crear directorio temporal si no existe
         os.makedirs("temp_report", exist_ok=True)
@@ -312,7 +313,7 @@ def generate_batch_report_with_shap(df, waterfall_images):
         shap_values_batch.feature_names = get_clean_feature_names()
 
         # --- Beeswarm para lote ---
-        fig1, ax1 = plt.subplots(figsize=(8, 6))
+        fig1, ax1 = plt.subplots(figsize=(6, 4))
         shap.plots.beeswarm(shap_values_batch, show=False)
         plt.savefig("shap_beeswarm_lote.png", bbox_inches='tight', dpi=150, facecolor='white')
         plt.close(fig1)
@@ -323,7 +324,6 @@ def generate_batch_report_with_shap(df, waterfall_images):
                 return base64.b64encode(f.read()).decode()
 
         beeswarm_b64 = img_to_base64("shap_beeswarm_lote.png")
-        waterfall_b64s = [img_to_base64(img_tuple[0]) for img_tuple in waterfall_images]
 
         # Calcular estadísticas
         avg_frap = df['FRAP_predicho'].mean()
@@ -331,126 +331,185 @@ def generate_batch_report_with_shap(df, waterfall_images):
         med_count = len(df[df['Clasificación'] == 'Medio'])
         low_count = len(df[df['Clasificación'] == 'Bajo'])
 
+        # Crear DataFrame para visualización con nombres traducidos
+        display_df = df.copy()
+        display_df = display_df.rename(columns=COLUMN_TRANSLATIONS)
+
+
         # Convertir DataFrame a HTML
-        df_html = df.to_html(index=False, table_id="resultados", escape=False)
+        df_html = display_df.to_html(index=False, table_id="resultados", escape=False)
 
         # Generar secciones condicionales
-        recomendaciones_html = "<h2>Recomendaciones para I+D</h2>"
-        recomendaciones_html += """
-        <p>Cuando se evalúa un conjunto diverso de residuos agroindustriales con fines de valorización, la clasificación de su actividad antioxidante, medida mediante el método FRAP, puede proporcionar un criterio útil para orientar de manera preliminar el enfoque tecnológico más adecuado a seguir. A continuación, se presenta una recomendación generalizada para cada nivel de clasificación:</p>
+        recomendaciones_html = """
+        <div style="page-break-before: always;">
+            <h2 style="text-align: center;">Recomendaciones para I+D</h2>
+            <div style="text-align: justify; margin: 0 5%;">
+                <p>Cuando se evalúa un conjunto diverso de residuos agroindustriales con fines de valorización, la clasificación de su actividad antioxidante, medida mediante el método FRAP, puede proporcionar un criterio útil para orientar de manera preliminar el enfoque tecnológico más adecuado a seguir. A continuación, se presenta una recomendación generalizada para cada nivel de clasificación:</p>
         """
-
         if high_count > 0:
             recomendaciones_html += f"""
-            <h3>Residuos con Alta Capacidad Antioxidante: {high_count}</h3>
-            <p><strong>(FRAP > 10 mmol Fe²⁺/100 g)</strong></p>
-            <p><strong>Estrategia sugerida:</strong> Priorizar la recuperación de compuestos bioactivos antioxidantes, como polifenoles, flavonoides o compuestos azufrados, mediante procesos de extracción optimizados.</p>
-            <p><strong>Líneas recomendadas:</strong></p>
-            <ul>
-                <li>Desarrollo de extractos naturales antioxidantes para uso en alimentos, cosméticos o suplementos.</li>
-                <li>Aplicación como antioxidantes naturales para reemplazo de aditivos sintéticos en matrices sensibles a la oxidación.</li>
-                <li>Diseño de ingredientes funcionales o nutracéuticos, microencapsulados o estandarizados.</li>
-                <li>Incorporación en sistemas activos como películas, recubrimientos o envases con propiedades antioxidantes y/o antimicrobianas.</li>
-                <li>Integración en esquemas de biorrefinería, acoplada a la recuperación secuencial de otros compuestos de interés (fibra, pectina, aceites, etc.).</li>
-            </ul>
+                <h3 style="text-align: center;">Residuos con Alta Capacidad Antioxidante: {high_count}</h3>
+                <p><strong style="text-align: center; display: block;">(FRAP > 10 mmol Fe²⁺/100 g)</strong></p>
+                <p><strong>Estrategia sugerida:</strong> Priorizar la recuperación de compuestos bioactivos antioxidantes, como polifenoles, flavonoides o compuestos azufrados, mediante procesos de extracción optimizados.</p>
+                <p><strong>Líneas recomendadas:</strong></p>
+                <ul style="text-align: justify;">
+                    <li>Extracción de compuestos fenólicos mediante tecnologías verdes (ultrasonido, microondas, fluidos supercríticos)</li>
+                    <li>Desarrollo de ingredientes funcionales para alimentos y nutracéuticos</li>
+                    <li>Aplicaciones en cosmética natural como antioxidantes</li>
+                    <li>Microencapsulación para mejorar estabilidad y biodisponibilidad</li>
+                    <li>Evaluación sinérgica con otros antioxidantes naturales</li>
+                </ul>
             """
-
         if med_count > 0:
             recomendaciones_html += f"""
-            <h3>Residuos con Capacidad Antioxidante Media: {med_count}</h3>
-            <p><strong>(FRAP entre 2 y 10 mmol Fe²⁺/100 g)</strong></p>
-            <p><strong>Estrategia sugerida:</strong> Considerar una valorización dual o integrada, combinando el aprovechamiento de compuestos bioactivos con otras fracciones funcionales del residuo.</p>
-            <p><strong>Líneas recomendadas:</strong></p>
-            <ul>
-                <li>Desarrollo de extractos con funcionalidad moderada, aplicables como antioxidantes en matrices menos susceptibles a oxidación o en sinergia con otros aditivos.</li>
-                <li>Incorporación como ingrediente funcional con aporte antioxidante complementario, en alimentos, suplementos o fórmulas cosméticas.</li>
-                <li>Evaluación de su potencial como fuente de fibra dietética, pectina, compuestos volátiles u otros metabolitos secundarios.</li>
-                <li>Uso como sustrato en procesos biotecnológicos (fermentación, producción de enzimas o metabolitos de valor).</li>
-                <li>Aplicación en formulación de productos combinados con otros residuos que permitan sinergias funcionales.</li>
-            </ul>
+                <h3 style="text-align: center;">Residuos con Capacidad Antioxidante Media: {med_count}</h3>
+                <p><strong style="text-align: center; display: block;">(FRAP entre 2 y 10 mmol Fe²⁺/100 g)</strong></p>
+                <p><strong>Estrategia sugerida:</strong> Considerar una valorización dual o integrada, combinando el aprovechamiento de compuestos bioactivos con otras fracciones funcionales del residuo.</p>
+                <p><strong>Líneas recomendadas:</strong></p>
+                <ul style="text-align: justify;">
+                    <li>Desarrollo de extractos con funcionalidad moderada, aplicables como antioxidantes en matrices menos susceptibles a oxidación o en sinergia con otros aditivos.</li>
+                    <li>Incorporación como ingrediente funcional con aporte antioxidante complementario, en alimentos, suplementos o fórmulas cosméticas.</li>
+                    <li>Evaluación como fuente de fibra dietética u otros metabolitos secundarios.</li>
+                    <li>Uso como sustrato en procesos biotecnológicos (fermentación, producción de enzimas o metabolitos de valor).</li>
+                    <li>Aplicación en formulación de productos combinados con otros residuos que permitan sinergias funcionales.</li>
+                </ul>
             """
-
         if low_count > 0:
             recomendaciones_html += f"""
-            <h3>- Residuos con Baja Capacidad Antioxidante: {low_count}</h3>
-            <p><strong>(FRAP < 2 mmol Fe²⁺/100 g)</strong></p>
-            <p><strong>Estrategia sugerida:</strong> Desviar el enfoque hacia la valorización de otras fracciones estructurales o energéticas del residuo, dado que su contenido de compuestos antioxidantes no justifica una explotación orientada a bioactivos.</p>
-            <p><strong>Líneas recomendadas:</strong></p>
-            <ul>
-                <li>Aprovechamiento como fuente de fibra estructural, celulosa, hemicelulosa o lignina para la elaboración de biomateriales (bioplásticos, papel, aditivos de construcción).</li>
-                <li>Producción de biocombustibles o bioenergía (bioetanol, biogás, pellets), mediante hidrólisis y fermentación o digestión anaerobia.</li>
-                <li>Uso en alimentación animal, compostaje o formulación de enmiendas orgánicas, previa evaluación de composición nutricional y seguridad.</li>
-                <li>Aplicaciones en fermentación de estado sólido o líquida para obtención de subproductos industriales (enzimas, ácidos orgánicos, biopigmentos).</li>
-                <li>Considerar su inclusión como componente de mezclas multirresiduo, en esquemas de valorización combinada.</li>
-            </ul>
+                <h3 style="text-align: center;">Residuos con Baja Capacidad Antioxidante: {low_count}</h3>
+                <p><strong style="text-align: center; display: block;">(FRAP < 2 mmol Fe²⁺/100 g)</strong></p>
+                <p><strong>Estrategia sugerida:</strong> Desviar el enfoque hacia la valorización de otras fracciones estructurales o energéticas del residuo, dado que su contenido de compuestos antioxidantes no justifica una explotación orientada a bioactivos.</p>
+                <p><strong>Líneas recomendadas:</strong></p>
+                <ul style="text-align: justify;">
+                    <li>Aprovechamiento como fuente de fibra estructural, celulosa, hemicelulosa o lignina para la elaboración de biomateriales (bioplásticos, papel, aditivos de construcción).</li>
+                    <li>Producción de biocombustibles o bioenergía mediante hidrólisis y fermentación o digestión anaerobia.</li>
+                    <li>Uso en alimentación animal, compostaje o formulación de enmiendas orgánicas, previa evaluación de composición nutricional y seguridad.</li>
+                    <li>Aplicaciones en fermentación de estado sólido o líquido para obtención de subproductos industriales (enzimas, ácidos orgánicos, biopigmentos).</li>
+                    <li>Considerar su inclusión como componente de mezclas multirresiduo, en esquemas de valorización combinada.</li>
+                </ul>
+            """
+        recomendaciones_html += """
+            </div>
+        </div>
+        """
+
+        # Generar Waterfalls HTML con 2 gráficos por página (lado a lado)
+        waterfalls_html = ""
+        for i in range(0, len(waterfall_images), 2):
+            # Primera imagen (siempre existe)
+            img_path_1 = waterfall_images[i][0]
+            sample_name_1 = waterfall_images[i][1]
+
+            # Segunda imagen (si existe)
+            second_image_html = ""
+            if i + 1 < len(waterfall_images):
+                img_path_2 = waterfall_images[i+1][0]
+                sample_name_2 = waterfall_images[i+1][1]
+                second_image_html = f"""
+                <div style="width: 48%; margin-left: 2%;">
+                    <h3>📊 SHAP Waterfall: {sample_name_2}</h3>
+                    <div style="text-align: center;">
+                        <img src="data:image/png;base64,{img_to_base64(img_path_2)}" alt="SHAP Waterfall" style="max-width: 95%; height: auto;">
+                    </div>
+                    <p class="img-caption">Desglose de la predicción para la muestra {sample_name_2}.</p>
+                </div>
+                """
+
+            waterfalls_html += f"""
+            <div style="page-break-before: always;">
+                <div style="display: flex; justify-content: space-between;">
+                    <!-- Figura 1 -->
+                    <div style="width: 48%; margin-right: 2%;">
+                        <h3>📊 SHAP Waterfall: {sample_name_1}</h3>
+                        <div style="text-align: center;">
+                            <img src="data:image/png;base64,{img_to_base64(img_path_1)}" alt="SHAP Waterfall" style="max-width: 95%; height: auto;">
+                        </div>
+                        <p class="img-caption">Desglose de la predicción para la muestra {sample_name_1}.</p>
+                    </div>
+                    <!-- Figura 2 -->
+                    {second_image_html}
+                </div>
+            </div>
             """
 
-        # Generar Waterfalls HTML usando los nombres originales del dataframe
-        # MODIFICACIÓN: Generar Waterfalls HTML con 2 gráficos por página
-        waterfalls_html = "".join([
-            f'''
-            <div style="page-break-before: always;">
-                <h3>📊 SHAP Waterfall: {sample_name}</h3>
-                <div style="text-align: center;">
-                    <img src="data:image/png;base64,{img_to_base64(img_path)}" alt="SHAP Waterfall" style="max-width: 95%; height: auto;">
-                </div>
-                <p class="img-caption">Desglose de la predicción para la muestra {sample_name}.</p>
-            </div>
-            '''
-            for img_path, sample_name in waterfall_images
-        ])
-        # HTML completo
+        # HTML completo con ajustes mejorados para la tabla
         html_content = f"""
         <!DOCTYPE html>
         <html>
         <head>
             <meta charset="UTF-8">
-            <title>Informe por Lote - FRAP Predicted</title>
+            <title>Informe por Lote - FRAP Predicho</title>
             <style>
                 @page {{
-                    size: A4;
-                    margin: 2cm 1.5cm;
+                    size: landscape;
+                    margin: 1cm; /* Reducir margen general */
                 }}
                 body {{
                     font-family: Arial, sans-serif;
-                    margin: 0;
+                    margin: 0 auto; /* Centrado horizontal */
+                    max-width: 95%; /* Limitar ancho máximo */
+                    padding: 0.5cm;
                     line-height: 1.4;
+                    text-align: center; /* Centrado general */
+                }}
+                .content-wrapper {{
+                    text-align: left; /* Alinear texto a izquierda dentro del contenedor */
+                    margin: 0 auto; /* Centrado horizontal */
+                    width: 100%;
                 }}
                 h1, h2, h3 {{
                     color: #2c3e50;
+                    text-align: center; /* Títulos centrados */
+                    margin-top: 0.5em;
+                    margin-bottom: 0.5em;
                 }}
-                h1 {{ font-size: 1.8em; }}
-                h2 {{ font-size: 1.4em; }}
-                h3 {{ font-size: 1.2em; }}
+                h1 {{
+                    font-size: 1.6em; /* Reducir tamaño para mejor ajuste */
+                    page-break-before: avoid;
+                }}
+                h2 {{ font-size: 1.3em; }}
+                h3 {{ font-size: 1.1em; }}
+                .results-table-container {{
+                    width: 100%;
+                    overflow-x: auto;
+                    margin: 15px auto; /* Centrado */
+                }}
                 table {{
                     border-collapse: collapse;
                     width: 100%;
-                    margin: 15px 0;
                     table-layout: auto;
-                    font-size: 0.85em;
+                    font-size: 0.65em; /* Reducir ligeramente */
+                    word-wrap: break-word;
+                    margin: 0 auto; /* Centrar tabla */
                 }}
                 th, td {{
                     border: 1px solid #ddd;
-                    padding: 5px 6px;
-                    text-align: left;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
+                    padding: 5px 6px; /* Ajustar padding */
+                    text-align: center; /* Contenido de celdas centrado */
+                    vertical-align: middle;
                 }}
                 th {{
                     background-color: #f2f2f2;
                     font-weight: bold;
+                    white-space: nowrap;
+                }}
+                td {{
+                    word-break: break-word;
+                    max-width: 120px; /* Reducir ancho máximo */
                 }}
                 .highlight {{
                     background-color: #fffacd;
                     padding: 10px;
-                    margin: 12px 0;
+                    margin: 12px auto; /* Centrado */
                     border-radius: 5px;
+                    width: 90%;
+                    text-align: center;
                 }}
                 img {{
-                    max-width: 100%;
+                    max-width: 85%; /* Reducir tamaño de imágenes */
                     height: auto;
-                    margin: 8px 0;
+                    margin: 8px auto; /* Centrado */
+                    display: block;
                 }}
                 .img-caption {{
                     font-size: 0.8em;
@@ -460,34 +519,47 @@ def generate_batch_report_with_shap(df, waterfall_images):
                     margin-top: 5px;
                 }}
                 ul {{
-                    font-size: 0.9em;
+                    font-size: 0.85em;
                     line-height: 1.3;
+                    padding-left: 20px;
                 }}
                 li {{
                     margin-bottom: 4px;
+                    text-align: left;
+                }}
+                .waterfall-container {{
+                    page-break-inside: avoid; /* Evitar división entre páginas */
+                }}
+                /* Control de paginación para recomendaciones */
+                .recommendations-section {{
+                    page-break-inside: avoid;
+                    page-break-after: always;
                 }}
             </style>
         </head>
         <body>
-            <h1>Informe de Análisis por Lote - FRAP Predicted</h1>
-            <p><strong>Fecha:</strong> {datetime.now().strftime('%d/%m/%Y')}</p>
-            <p><strong>Total de muestras:</strong> {len(df)}</p>
-            <p><strong>FRAP promedio:</strong> {avg_frap:.2f} mmol Fe²⁺/100g</p>
-            <div class="highlight">
-                <p><strong>Resumen:</strong> Este informe evalúa el potencial antioxidante de múltiples agroresiduos.</p>
-            </div>
-            <h2>Resultados</h2>
-            {df_html}
-            {recomendaciones_html}
-            <div style="page-break-before: always;">
-                <h2>Explicabilidad del modelo (SHAP)</h2>
-                <h3>🐝 SHAP Beeswarm: Importancia global de features</h3>
-                <div style="text-align: center;">
-                    <img src="data:image/png;base64,{beeswarm_b64}" alt="SHAP Beeswarm" style="max-width: 90%; height: auto;">
+            <div class="content-wrapper">
+                <h1>Informe de Análisis por Lote - FRAP Predicho</h1>
+                <p style="text-align: center;"><strong>Fecha:</strong> {datetime.now().strftime('%d/%m/%Y')}</p>
+                <p style="text-align: center;"><strong>Total de muestras:</strong> {len(df)}</p>
+                <p style="text-align: center;"><strong>FRAP promedio:</strong> {avg_frap:.2f} mmol Fe²⁺/100g</p>
+                <div class="highlight">
+                    <p><strong>Resumen:</strong> Este informe evalúa el potencial antioxidante de múltiples agroresiduos.</p>
                 </div>
-                <p class="img-caption">Importancia de cada componente en el conjunto de predicciones.</p>
+                <h2>Resultados</h2>
+                <div class="results-table-container">
+                    {df_html}
+                </div>
+                <div class="recommendations-section">
+                    {recomendaciones_html}
+                </div>
+                <div>
+                    <h3>🐝 SHAP Beeswarm: Importancia global de features</h3>
+                    <img src="data:image/png;base64,{beeswarm_b64}" alt="SHAP Beeswarm">
+                    <p class="img-caption">Importancia de cada componente en el conjunto de predicciones.</p>
+                </div>
+                {waterfalls_html}
             </div>
-            {waterfalls_html}
         </body>
         </html>
         """
@@ -498,7 +570,7 @@ def generate_batch_report_with_shap(df, waterfall_images):
 
         # Generar PDF en modo paisaje
         from weasyprint import HTML
-        HTML("lote_temp.html").write_pdf("informe_lote_con_shap.pdf", stylesheets=["lote_temp.html"])
+        HTML("lote_temp.html").write_pdf("informe_lote_con_shap.pdf")
 
         # Leer PDF generado
         with open("informe_lote_con_shap.pdf", "rb") as f:
