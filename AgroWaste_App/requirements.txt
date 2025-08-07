@@ -1,8 +1,5 @@
 numpy>=1.21.0  # Operaciones numéricas eficientes
 pandas>=1.3.0  # Manipulación de datos estructurados
-scikit-learn>=1.0.0  # Machine Learning (regresión, preprocesamiento)
-xgboost>=1.5.0  # Modelos avanzados de boosting
-biopython>=1.79  # Minería de datos de PubMed via Entrez
 openai==1.98.0
 weasyprint==66.0  # Generación de PDFs y HTML
 joblib==1.3.2
@@ -17,10 +14,8 @@ plotly>=5.0.0  # Gráficos interactivos
 shap>=0.40.0  # Interpretabilidad de modelos
 
 # === Interfaz y despliegue ===
-streamlit>=1.12.0  # Dashboard web interactivo
 fastapi>=0.75.0  # API REST (opcional para backend)
 uvicorn>=0.17.0  # Servidor ASGI (para FastAPI)
 
 # === Gestión de datos ===
-openpyxl>=3.0.0  # Leer/exportar Excel
 feather-format>=0.4.0  # Formato eficiente para datos
