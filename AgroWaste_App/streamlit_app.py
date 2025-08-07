@@ -9,7 +9,7 @@ import shap
 import os
 import joblib
 import json
-from app_utils import get_clean_feature_names, safe_api_request, process_batch_shap, generate_report_with_shap , generate_batch_report_with_shap
+from app_utils_local import get_clean_feature_names, safe_api_request, process_batch_shap, generate_report_with_shap , generate_batch_report_with_shap
 
 
 
